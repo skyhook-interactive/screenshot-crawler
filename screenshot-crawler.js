@@ -20,14 +20,10 @@ var fs = require('fs')
 
 // Check if we are going to use a list of URLs
 if ( fs.exists( screenshotsFolder + '/urls.txt') ){
-	//this.echo('yes, exists');
-	//var givenUrls = fs.open( screenshotsFolder + '/urls.txt', 'r');
 	var givenUrls = fs.read( screenshotsFolder + '/urls.txt').toString().split("\n");
 
 	// set start URL
 	startUrl = givenUrls[0];
-	//console.log('start: '+startUrl);
-	//console.log('urls: '+givenUrls);
 
 	// set pendingURls
 	pendingUrls = givenUrls;
