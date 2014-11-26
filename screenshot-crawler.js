@@ -43,7 +43,7 @@ function spider(url) {
         pathname = pathname.replace('/', '');
         pathname = pathname.replace('/', '');
         this.echo(this.colorizer.format(status, statusStyle) + ' ' + url + ' --- Taking screenshot!!');
-        this.capture(screenshotsFolder + encodeURIComponent(pathname) + '_' + release + '.png');
+        this.capture(screenshotsFolder + encodeURIComponent(pathname) + '-' + release + '.png');
       });
     }
     else {
