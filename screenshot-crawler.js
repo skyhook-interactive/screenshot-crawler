@@ -16,6 +16,27 @@ var visitedUrls = [], pendingUrls = [];
 
 var utils = require('utils')
 var helpers = require('./helpers')
+var fs = require('fs')
+
+// Check if we are going to use a list of URLs
+if ( fs.exists( screenshotsFolder + '/urls.txt') ){
+	//this.echo('yes, exists');
+	//var givenUrls = fs.open( screenshotsFolder + '/urls.txt', 'r');
+	var givenUrls = fs.read( screenshotsFolder + '/urls.txt').toString().split("\n");
+
+	// set start URL
+	startUrl = givenUrls[0];
+	//console.log('start: '+startUrl);
+	//console.log('urls: '+givenUrls);
+
+	// set pendingURls
+	pendingUrls = givenUrls;
+
+	var crawlUrls = false;
+} else {
+	//this.echo('no, file not found');
+	var crawlUrls = true;
+}
 
 // Spider from the given URL
 function spider ( url ) {
@@ -64,14 +85,17 @@ function spider ( url ) {
 			return links;
 		});
 
-		// Add newly found URLs to the stack
-		Array.prototype.forEach.call(links, function( link ) {
-			var newUrl = helpers.absoluteUri(baseUrl, link);
-			if ( pendingUrls.indexOf(newUrl) == -1 && visitedUrls.indexOf(newUrl) == -1 && newUrl.indexOf(baseUrl) === 0 ) {
-				//casper.echo(casper.colorizer.format('-> Pushed ' + newUrl + ' onto the stack', { fg: 'magenta' }));
-				pendingUrls.push(newUrl);
-			}
-		});
+		// Should we crawl URLs?
+		if ( crawlUrls ){
+			// Add newly found URLs to the stack
+			Array.prototype.forEach.call(links, function( link ) {
+				var newUrl = helpers.absoluteUri(baseUrl, link);
+				if ( pendingUrls.indexOf(newUrl) == -1 && visitedUrls.indexOf(newUrl) == -1 && newUrl.indexOf(baseUrl) === 0 ) {
+					//casper.echo(casper.colorizer.format('-> Pushed ' + newUrl + ' onto the stack', { fg: 'magenta' }));
+					pendingUrls.push(newUrl);
+				}
+			});
+		}
 
 		// If there are URLs to be processed
 		if ( pendingUrls.length > 0 ) {
