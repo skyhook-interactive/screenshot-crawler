@@ -40,7 +40,8 @@ function spider(url) {
     if (status == 200) {
       this.wait(2000, function() {
         var pathname = this.getGlobal('location').pathname;
-
+        pathname = pathname.replace('/', '');
+        pathname = pathname.replace('/', '');
         this.echo(this.colorizer.format(status, statusStyle) + ' ' + url + ' --- Taking screenshot!!');
         this.capture(screenshotsFolder + encodeURIComponent(pathname) + '_' + release + '.png');
       });
